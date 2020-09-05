@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  namespace :api do
+  devise_for :users
+  namespace :api, defaults: {format: :json} do
+    root to: "home#index"
+
+    devise_scope :user do
+      post "sign_up", to: "registrations#create"
+      post "sign_in", to: "sessions#create"
+    end
+
     resources :types, only: [:index, :tags]
     get '/types/:id/tags', to: 'types#tags'
 

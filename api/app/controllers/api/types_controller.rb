@@ -1,4 +1,5 @@
 class Api::TypesController < ApplicationController
+  acts_as_token_authentication_handler_for User
 
   # GET /types/:id
   def index

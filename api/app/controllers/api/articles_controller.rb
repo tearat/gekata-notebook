@@ -1,4 +1,5 @@
 class Api::ArticlesController < ApplicationController
+  acts_as_token_authentication_handler_for User
   before_action :set_item, only: [:show, :update, :destroy]
 
   # GET /articles
