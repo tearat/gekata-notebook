@@ -1,7 +1,7 @@
 class Api::SessionsController < ApplicationController
   before_action :sign_in_params, only: :create
   before_action :load_user, only: :create
-  
+
   # sign in
   def create
     if @user.valid_password?(sign_in_params[:password])
@@ -9,7 +9,10 @@ class Api::SessionsController < ApplicationController
       render json: {
         messages: "Signed In Successfully",
         is_success: true,
-        data: {user: @user}
+        data: {user: {
+            email: @user.email,
+            authentication_token: @user.authentication_token,
+        }}
       }, status: :ok
     else
       render json: {
