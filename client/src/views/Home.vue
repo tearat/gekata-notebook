@@ -8,11 +8,11 @@
       <p class="title-text">
         Awesome notebook!
       </p>
-      <p class="title-text">
-        store: {{ storeTest }}
+      <p class="title-text" v-if="isAuth">
+        Hello, {{ isAuth.email }}
       </p>
-      <p>
-        env: {{ envTest }}
+      <p v-else>
+        Hello, stranger...
       </p>
     </div>
   </div>
@@ -24,9 +24,8 @@ import logo from '../assets/logo.png'
 
 export default {
   name: 'Home',
-  // components: {
-  //   Index
-  // },
+  components: {
+  },
   data() {
       return {
           logo: logo,
@@ -34,15 +33,13 @@ export default {
   },
   computed: {
     envTest() {
-      return process.env.BACK_PORT
+      return `${process.env.VUE_APP_API_HOST} : ${process.env.VUE_APP_API_PORT}`
     },
-    storeTest() {
-      return this.$store.state.test
+    isAuth() {
+      return this.$store.getters.getUser
     },
   },
   mounted() {
-    // console.log("Mounted!")
-    // console.log("VUE_APP_NOT_SECRET_CODE:", process.env.VUE_APP_NOT_SECRET_CODE)
   }
 }
 </script>
@@ -50,7 +47,7 @@ export default {
 <style lang="scss">
 
 .logo {
-  padding: 20px;
+  padding: 10px;
   margin-top: 20px;
   .logo-img {
     width: 200px;
@@ -59,7 +56,7 @@ export default {
 
 .title {
   .title-header {
-    font-size: 60px;
+    font-size: 40px;
     font-weight: 300;
   }
   .title-text {

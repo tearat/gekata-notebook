@@ -1,10 +1,26 @@
 <template>
   <div id="page" class="debug1">
     <div id="nav">
+      <!-- <p>types: {{ $store.state.types.length }}</p> -->
+      <!-- <p>tags: {{ $store.state.tags.length }}</p> -->
+      <!-- <p>articles: {{ $store.state.articles.length }}</p> -->
+      <!-- <p>store user: {{ $store.state.user }}</p> -->
+      <!-- <p>cookie user: {{ userCookie }}</p> -->
+
       <router-link to="/">Main</router-link>
-      <router-link to="/types">Types</router-link>
-      <router-link to="/tags">Tags</router-link>
-      <router-link to="/articles">Articles</router-link>
+
+      <span v-if="isAuth">
+        <router-link to="/types">Types</router-link>
+        <router-link to="/tags">Tags</router-link>
+        <router-link to="/articles">Articles</router-link>
+        <a href="#" @click="logout">Logout</a>
+      </span>
+
+      <span v-else>
+        <router-link to="/login">Login</router-link>
+        <router-link to="/register">Register</router-link>
+      </span>
+
     </div>
     <div>
       <router-view/>
@@ -14,6 +30,7 @@
 
 <script>
 
+import cookie from 'tiny-cookie'
 
 export default {
   name: 'Home',
@@ -21,9 +38,23 @@ export default {
       return {
       }
   },
+  computed: {
+    isAuth() {
+      return this.$store.getters.getUser
+    },
+    userCookie() {
+      return cookie.get('user')
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      this.$router.push('/')
+    }
+  },
   mounted() {
-    // this.$store.actions.getdata()
-    this.$store.dispatch('getData')
+    this.$store.dispatch('getUserFromCookie')
+    // this.$store.dispatch('autoLogin')
   }
 }
 </script>
