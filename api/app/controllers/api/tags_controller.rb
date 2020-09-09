@@ -7,17 +7,11 @@ class Api::TagsController < ApplicationController
     render json: Tag.select('id', 'title', 'type_id').all
   end
 
-  # GET /tags/:id/articles
-  def articles
-    @tag = Tag.find(params[:id])
-    @articles = Article.where(:tag_id => @tag.id)
-    render json: @articles
-  end
-
   # GET /tags/:id
   def show
     @tag = Tag.find(params[:id])
-    render json: @tag, status: 200
+    @articles = Article.where(:tag_id => @tag.id)
+    render json: {tag: @tag, articles: @articles}
   end
 
   # POST /tags

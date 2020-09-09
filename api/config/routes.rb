@@ -8,12 +8,9 @@ Rails.application.routes.draw do
       post "sign_in", to: "sessions#create"
     end
 
-    resources :types, only: [:index, :tags]
-    get '/types/:id/tags', to: 'types#tags'
-
+    get :data, to: "data#index"
+    resources :types
     resources :tags
-    get '/tags/:id/articles', to: 'tags#articles'
-
     resources :articles
   end
 end

@@ -10,6 +10,8 @@ class Api::SessionsController < ApplicationController
         messages: "Signed In Successfully",
         is_success: true,
         data: {user: {
+            id: @user.id,
+            username: @user.username,
             email: @user.email,
             authentication_token: @user.authentication_token,
         }}
