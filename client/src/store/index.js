@@ -8,6 +8,7 @@ export default createStore({
     types: [],
     tags: [],
     articles: [],
+    data: {},
   },
   getters: {
     getUser: state => {
@@ -15,6 +16,15 @@ export default createStore({
     },
     getTypes: state => {
       return state.types
+    },
+    getTags: state => {
+      return state.tags
+    },
+    getArticles: state => {
+      return state.articles
+    },
+    getData: state => {
+      return state.data
     },
   },
   mutations: {
@@ -29,18 +39,36 @@ export default createStore({
     setTypes(state, types) {
       console.log("set types!")
       state.types = types
-    }
+    },
+    setTags(state, tags) {
+      console.log("set tags!")
+      state.tags = tags
+    },
+    setArticles(state, articles) {
+      console.log("set articles!")
+      state.articles = articles
+    },
+    setData(state, data) {
+      console.log("set data!")
+      state.data = data
+    },
+    clearData(state) {
+      console.log("clear data!")
+      state.data = {}
+    },
   },
   actions: {
     logout(context) {
       cookie.remove('user')
       context.commit('removeUser')
+      context.commit('clearData')
     },
     getUserFromCookie(context) {
       const user = cookie.get('user')
       console.log("user:", user)
       if( user ) {
         context.commit('setUser', JSON.parse(user))
+        context.dispatch('getData')
       }
     },
     // autoLogin(context) {
@@ -71,26 +99,40 @@ export default createStore({
           const { user } = res.data.data
           context.commit('setUser', user)
           cookie.set('user', JSON.stringify(user))
+          context.dispatch('getData')
           // cookie.set('email', user.email)
           // cookie.set('authentication_token', user.authentication_token)
         }
       })
     },
     getTypes(context) {
-        console.log("Get types!")
-        axios({
-            method: 'get',
-            url: '/types',
-            headers: {
-              'X-User-Email': context.state.user.email,
-              'X-User-Token': context.state.user.authentication_token,
-            }
-        })
-        .then(res => {
-          console.log(res.data)
-          context.commit('setTypes', res.data)
-        })
+      context.dispatch('dataLoader', ['types', 'setTypes'])
     },
+    getTags(context) {
+      context.dispatch('dataLoader', ['tags', 'setTags'])
+    },
+    getArticles(context) {
+      context.dispatch('dataLoader', ['articles', 'setArticles'])
+    },
+    getData(context) {
+      context.dispatch('dataLoader', ['data', 'setData'])
+    },
+    dataLoader(context, params) {
+      const [ type, mutation ] = params
+      console.log(`Get ${type}!"`)
+      axios({
+          method: 'get',
+          url: `/${type}`,
+          headers: {
+            'X-User-Email': context.state.user.email,
+            'X-User-Token': context.state.user.authentication_token,
+          }
+      })
+      .then(res => {
+        console.log(res.data)
+        context.commit(mutation, res.data)
+      })
+    }
   },
   modules: {
   }

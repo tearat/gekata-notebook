@@ -1,20 +1,20 @@
 <template lang="html">
   <div>
     <h1>Register</h1>
-    <form @submit="submitForm">
-      <div>
-        <label for="email">email:</label>
+    <form @submit="submitForm" class="form">
+      <div class="form__input-group">
+        <label for="email">Email:</label>
         <input type="email" v-model="user.email" id="email">
       </div>
-      <div>
-        <label for="password">password:</label>
+      <div class="form__input-group">
+        <label for="password">Password:</label>
         <input type="password" v-model="user.password" id="password">
       </div>
-      <div>
-        <label for="password-confirmation">passwordConfirm:</label>
+      <div class="form__input-group">
+        <label for="password-confirmation">Password confirm:</label>
         <input type="password" v-model="user.password_confirmation" id="password-confirmation">
       </div>
-      <div>
+      <div class="form__input-group">
         <button type="submit">Register</button>
       </div>
     </form>

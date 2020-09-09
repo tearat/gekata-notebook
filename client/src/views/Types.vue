@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <div v-if="getTypes.length">
-      <div v-for="type in getTypes" :key="type.id">
-        <h2>{{ type.title }}</h2>
-        <p>{{ type.body }}</p>
+  <div class="view">
+
+    <h1>All notebooks:</h1>
+
+    <div v-if="getTypes" class="list">
+      <div v-for="type in getTypes" :key="type.id" class="list__item">
+        <router-link :to="{ name: 'Type', params: {id: type.id} }">
+          {{ type.title }}
+        </router-link>
       </div>
     </div>
   </div>
@@ -11,28 +15,28 @@
 
 <script>
 
-import logo from '../assets/logo.png'
-
 export default {
-  name: 'Home',
+  name: 'Types',
   components: {
   },
   data() {
       return {
-          logo: logo,
       }
   },
   computed: {
     getTypes() {
-      return this.$store.getters.getTypes
+      return this.$store.getters.getData.types
     },
   },
   mounted() {
-    this.$store.dispatch('getTypes')
+    // this.$store.dispatch('getTypes')
   }
 }
 </script>
 
 <style lang="scss">
+
+
+
 
 </style>

@@ -4,13 +4,16 @@
       <!-- <p>types: {{ $store.state.types.length }}</p> -->
       <!-- <p>tags: {{ $store.state.tags.length }}</p> -->
       <!-- <p>articles: {{ $store.state.articles.length }}</p> -->
+      <!-- <p>data: {{ !!$store.state.data }}</p> -->
       <!-- <p>store user: {{ $store.state.user }}</p> -->
       <!-- <p>cookie user: {{ userCookie }}</p> -->
 
-      <router-link to="/">Main</router-link>
+      <router-link to="/">
+        Main
+      </router-link>
 
       <span v-if="isAuth">
-        <router-link to="/types">Types</router-link>
+        <router-link to="/notebooks">Notebooks</router-link>
         <router-link to="/tags">Tags</router-link>
         <router-link to="/articles">Articles</router-link>
         <a href="#" @click="logout">Logout</a>
@@ -38,6 +41,8 @@ export default {
       return {
       }
   },
+  components: {
+  },
   computed: {
     isAuth() {
       return this.$store.getters.getUser
@@ -48,8 +53,10 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch('logout')
-      this.$router.push('/')
+      if (confirm("Logout?")) {
+        this.$store.dispatch('logout')
+        this.$router.push('/')
+      }
     }
   },
   mounted() {
@@ -61,10 +68,81 @@ export default {
 
 <style lang="scss">
 
+$accent: #d181ff;
+
 body {
   color: #eee;
   // background: #111;
-  background: url('./assets/bg.jpg');
+  background: url('./assets/images/bg.jpg');
+}
+
+a {
+  color: $accent;
+}
+
+hr {
+  max-width: 200px;
+  border-color: $accent;
+  margin-top: 25px;
+}
+
+// .icon {
+//   img {
+//     width: 40px;
+//   }
+// }
+
+.gold {
+  color: gold;
+}
+
+.right {
+  float: right;
+}
+
+.view {
+  margin-top: 25px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  &__item {
+    background: #fff2;
+    a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      &.empty {
+        color: #666;
+      }
+    }
+    &:hover {
+      background: #fff4;
+    }
+    margin: 5px;
+  }
+}
+
+.list-vertical {
+  text-align: left;
+  &__item {
+    background: #fff2;
+    a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      &.hidden {
+        color: gold;
+      }
+    }
+    &:hover {
+      background: #fff4;
+    }
+    margin: 5px;
+  }
 }
 
 #page {
@@ -72,7 +150,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background: #ffffff05;
+  // background: #ffffff05;
   max-width: 1200px;
   margin: 40px auto;
   padding: 20px;
@@ -80,15 +158,16 @@ body {
 
 #nav {
   padding: 20px;
-  border-bottom: 1px solid gold;
+  // border-bottom: 1px solid $accent;
   a {
     font-weight: bold;
-    color: gold;
+    color: $accent;
     padding: 10px 20px;
     font-size: 24px;
     font-weight: 300;
     // margin: 10px;
     text-decoration: none;
+    border-bottom: 1px solid $accent;
     &:hover {
       background: #fff1;
     }
