@@ -8,14 +8,15 @@ class Api::TypesController < ApplicationController
 
   # GET /types/:id
   def show
-    @type = Type.find(params[:id])
-    @tags = Tag.where(:type_id => @type.id)
-    @articles = Article.where(tag_id: @tags.map { |tag| tag.id })
-    render json: {
-      type: @type,
-      tags: @tags,
-      articles: @articles,
-      user: current_user
-    }
+    @user = current_user
+    @type = Type.find(params[:id]).as_json
+    @articles = Article.select('id', 'title', 'body', 'hidden', 'user_id').order(:title).where(type_id: params[:id])
+    @articles = @articles.where(user_id: @user.id, hidden: 1).or(@articles.where(hidden: 0)).as_json
+    @articles.each do |article|
+      article[:user] = User.select('id', 'username').where(id: article['user_id']).first
+    end
+    @type[:articles] = @articles
+
+    render json: @type
   end
 end

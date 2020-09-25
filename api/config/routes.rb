@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       post "sign_in", to: "sessions#create"
     end
 
-    get :data, to: "data#index"
+    # get :data, to: "data#index"
     resources :types
     resources :tags
     resources :articles
