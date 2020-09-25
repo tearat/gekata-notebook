@@ -3,13 +3,18 @@
 
     <h1>All notebooks:</h1>
 
-    <div v-if="getTypes" class="list">
+    <div v-if="getTypes.length" class="list">
       <div v-for="type in getTypes" :key="type.id" class="list__item">
         <router-link :to="{ name: 'Type', params: {id: type.id} }">
           {{ type.title }}
         </router-link>
       </div>
     </div>
+
+    <div v-else>
+      <p>Loading error</p>
+    </div>
+
   </div>
 </template>
 
@@ -25,18 +30,13 @@ export default {
   },
   computed: {
     getTypes() {
-      return this.$store.getters.getData.types
+      return this.$store.getters.getTypes
     },
   },
   mounted() {
-    // this.$store.dispatch('getTypes')
   }
 }
 </script>
 
 <style lang="scss">
-
-
-
-
 </style>

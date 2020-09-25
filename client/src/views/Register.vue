@@ -3,6 +3,10 @@
     <h1>Register</h1>
     <form @submit="submitForm" class="form">
       <div class="form__input-group">
+        <label for="username">Username:</label>
+        <input type="text" v-model="user.username" id="username">
+      </div>
+      <div class="form__input-group">
         <label for="email">Email:</label>
         <input type="email" v-model="user.email" id="email">
       </div>
@@ -23,16 +27,14 @@
 
 <script>
 
-import axios from '../service/axios.js'
-
 export default {
   name: 'Register',
   components: {
-    // Register: () => require('../components/Register.vue'),
   },
   data() {
       return {
           user: {
+            username: '',
             email: '',
             password: '',
             password_confirmation: '',
@@ -44,25 +46,22 @@ export default {
   methods: {
     submitForm(event) {
       event.preventDefault()
+      if( this.password != this.password_confirmation ) {
+        console.log("Password not confirmed")
+        return false
+      }
       console.log("Register form sent")
-      axios({
-          method: 'post',
-          url: '/sign_up',
-          data: {
-            user: this.user
-          },
-      })
-      .then(res => {
-        console.log(res.data)
+      this.$store.dispatch('register', this.user)
+      .then(() => {
+        this.$store.dispatch('login', this.user)
+        this.$router.push({name: 'Home'})
       })
     }
   },
   mounted() {
-    // console.log("Mounted!")
-    // console.log("VUE_APP_NOT_SECRET_CODE:", process.env.VUE_APP_NOT_SECRET_CODE)
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 </style>

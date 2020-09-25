@@ -1,12 +1,13 @@
 <template>
   <div id="page" class="debug1">
+
     <div id="nav">
-      <!-- <p>types: {{ $store.state.types.length }}</p> -->
-      <!-- <p>tags: {{ $store.state.tags.length }}</p> -->
-      <!-- <p>articles: {{ $store.state.articles.length }}</p> -->
-      <!-- <p>data: {{ !!$store.state.data }}</p> -->
-      <!-- <p>store user: {{ $store.state.user }}</p> -->
-      <!-- <p>cookie user: {{ userCookie }}</p> -->
+      <p>types: {{ $store.state.types.length }}</p>
+      <p>tags: {{ $store.state.tags.length }}</p>
+      <p>articles: {{ $store.state.articles.length }}</p>
+      <p>data: {{ !!$store.state.data }}</p>
+      <p>store user: {{ $store.state.user }}</p>
+      <p>cookie user: {{ userCookie }}</p>
 
       <router-link to="/">
         Main
@@ -25,6 +26,7 @@
       </span>
 
     </div>
+
     <div>
       <router-view/>
     </div>
@@ -67,133 +69,4 @@ export default {
 </script>
 
 <style lang="scss">
-
-$accent: #d181ff;
-
-body {
-  color: #eee;
-  // background: #111;
-  background: url('./assets/images/bg.jpg');
-}
-
-a {
-  color: $accent;
-}
-
-hr {
-  max-width: 200px;
-  border-color: $accent;
-  margin-top: 25px;
-}
-
-// .icon {
-//   img {
-//     width: 40px;
-//   }
-// }
-
-.gold {
-  color: gold;
-}
-
-.right {
-  float: right;
-}
-
-.view {
-  margin-top: 25px;
-}
-
-.list {
-  display: flex;
-  justify-content: center;
-  &__item {
-    background: #fff2;
-    a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      &.empty {
-        color: #666;
-      }
-    }
-    &:hover {
-      background: #fff4;
-    }
-    margin: 5px;
-  }
-}
-
-.list-vertical {
-  text-align: left;
-  &__item {
-    background: #fff2;
-    a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      &.hidden {
-        color: gold;
-      }
-    }
-    &:hover {
-      background: #fff4;
-    }
-    margin: 5px;
-  }
-}
-
-#page {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  // background: #ffffff05;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-#nav {
-  padding: 20px;
-  // border-bottom: 1px solid $accent;
-  a {
-    font-weight: bold;
-    color: $accent;
-    padding: 10px 20px;
-    font-size: 24px;
-    font-weight: 300;
-    // margin: 10px;
-    text-decoration: none;
-    border-bottom: 1px solid $accent;
-    &:hover {
-      background: #fff1;
-    }
-  }
-}
-
-.debug {
-  div {
-    border: 1px dashed royalblue;
-  }
-  h1,h2,h3,h4 {
-    border: 1px dashed firebrick;
-  }
-  p {
-    border: 1px dashed green;
-  }
-  span {
-    border: 1px dashed purple;
-  }
-  a {
-    background: yellow;
-  }
-}
-
-.container {
-
-}
-
 </style>

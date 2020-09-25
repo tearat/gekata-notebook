@@ -1,0 +1,212 @@
+$accent: #d181ff;
+
+.accent {
+  color: $accent;
+}
+
+.logo {
+  padding: 10px;
+  margin-top: 20px;
+  .logo-img {
+    width: 200px;
+  }
+}
+
+.title {
+  .title-header {
+    font-size: 40px;
+    font-weight: 300;
+    font-weight: 100;
+  }
+  .title-text {
+    font-size: 20px;
+  }
+}
+
+a.button {
+  font-size: 24px;
+  text-decoration: none;
+  padding: 10px 20px;
+  background: #fff1;
+  &:hover {
+    color: white;
+    background: #fff3;
+  }
+}
+
+$accent: #d181ff;
+
+body {
+  color: #eee;
+  // background: #111;
+  background: url('../images/bg.jpg');
+}
+
+a {
+  color: $accent;
+}
+
+hr {
+  max-width: 200px;
+  border-color: $accent;
+  margin-top: 25px;
+}
+
+// .icon {
+//   img {
+//     width: 40px;
+//   }
+// }
+
+.gold {
+  color: gold;
+}
+
+.right {
+  float: right;
+}
+
+.view {
+  margin-top: 25px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  &__item {
+    background: #fff2;
+    a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      &.empty {
+        color: #666;
+      }
+    }
+    &:hover {
+      background: #fff4;
+    }
+    margin: 5px;
+  }
+}
+
+.list-vertical {
+  text-align: left;
+  &__item {
+    background: #fff2;
+    a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      &.hidden {
+        color: gold;
+      }
+    }
+    &:hover {
+      background: #fff4;
+    }
+    margin: 5px;
+  }
+}
+
+#page {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  // background: #ffffff05;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+#nav {
+  padding: 20px;
+  margin-bottom: 20px;
+  // border-bottom: 1px solid $accent;
+  a {
+    font-weight: bold;
+    color: $accent;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: 300;
+    // margin: 10px;
+    text-decoration: none;
+    border-bottom: 1px solid $accent;
+    &:hover {
+      background: #fff1;
+    }
+  }
+}
+
+.debug {
+  div {
+    border: 1px dashed royalblue;
+  }
+  h1,h2,h3,h4 {
+    border: 1px dashed firebrick;
+  }
+  p {
+    border: 1px dashed green;
+  }
+  span {
+    border: 1px dashed purple;
+  }
+  a {
+    background: yellow;
+  }
+}
+
+.container {
+
+}
+
+
+.form {
+  // background: red;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  &__input-group {
+    margin-bottom: 10px;
+    label {
+      display: block;
+    }
+    input, textarea, select {
+      border: none;
+      padding: 10px;
+      background: #fff2;
+      color: white;
+      width: calc(100% - 20px);
+      &:focus {
+        outline: none;
+      }
+    }
+    textarea {
+      resize: vertical;
+      height: 300px;
+    }
+    select {
+      width: 100%;
+      option {
+        background: #111;
+        color: white;
+        font-size: 20px;
+      }
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      border: none;
+      padding: 10px;
+      background: #fff2;
+      color: white;
+      &:hover {
+        background: #fff4;
+        cursor: pointer;
+      }
+    }
+  }
+}

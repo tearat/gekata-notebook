@@ -5,84 +5,79 @@ const cookie = require('tiny-cookie')
 export default createStore({
   state: {
     user: null,
+     // lazyload, static
     types: [],
     tags: [],
     articles: [],
-    data: {},
+     // mutable
+    type: {},
+    tag: {},
+    article: {},
   },
   getters: {
-    getUser: state => {
-      return state.user
-    },
-    getTypes: state => {
-      return state.types
-    },
-    getTags: state => {
-      return state.tags
-    },
-    getArticles: state => {
-      return state.articles
-    },
-    getData: state => {
-      return state.data
-    },
+    getUser:     state => state.user,
+    getTypes:    state => state.types,
+    getType:     state => state.type,
+    getTags:     state => state.tags,
+    getTag:      state => state.tag,
+    getArticles: state => state.articles,
+    getArticle:  state => state.article,
   },
   mutations: {
     setUser(state, user) {
-      console.log("set user mutation!")
+      console.log("Mutation: setUser")
       state.user = user
     },
     removeUser(state) {
-      console.log("remove user mutation!")
+      console.log("Mutation: removeUser")
       state.user = null
     },
-    setTypes(state, types) {
-      console.log("set types!")
+    setTypes(state, types) { // DONE
+      console.log("Mutation: setTypes")
       state.types = types
     },
-    setTags(state, tags) {
-      console.log("set tags!")
+    setType(state, type) { // DONE
+      console.log("Mutation: setType")
+      state.type = type
+    },
+    setTags(state, tags) { // DONE
+      console.log(`Mutation: setTags (count ${tags.length})`)
       state.tags = tags
     },
+    setTag(state, tag) { // DONE
+      console.log(`Mutation: setTag (tag: ${tag})`)
+      state.tag = tag
+    },
     setArticles(state, articles) {
-      console.log("set articles!")
+      console.log("Mutation: setArticles")
       state.articles = articles
     },
-    setData(state, data) {
-      console.log("set data!")
-      state.data = data
-    },
-    clearData(state) {
-      console.log("clear data!")
-      state.data = {}
+    setArticle(state, article) {
+      console.log(`Mutation: setArticle (article: ${article})`)
+      state.article = article
     },
   },
   actions: {
     logout(context) {
+      console.log("Action: logout")
       cookie.remove('user')
       context.commit('removeUser')
       context.commit('clearData')
     },
     getUserFromCookie(context) {
+      console.log("Action: getUserFromCookie")
       const user = cookie.get('user')
       console.log("user:", user)
       if( user ) {
         context.commit('setUser', JSON.parse(user))
-        context.dispatch('getData')
+        // lazyload
+        context.dispatch('getTypes')
+        context.dispatch('getTags')
+        context.dispatch('getArticles')
       }
     },
-    // autoLogin(context) {
-    //   const email = cookie.get('email')
-    //   const authentication_token = cookie.get('authentication_token')
-    //   console.log("Auto login")
-    //   console.log("email:", email)
-    //   console.log("authentication_token:", authentication_token)
-    //   if( email && authentication_token ) {
-    //     context.dispatch('login', { email, authentication_token } )
-    //   }
-    // },
     login(context, credentials) {
-      console.log("login!")
+      console.log("Action: login")
       const { email, password } = credentials
       axios({
           method: 'post',
@@ -99,30 +94,51 @@ export default createStore({
           const { user } = res.data.data
           context.commit('setUser', user)
           cookie.set('user', JSON.stringify(user))
-          context.dispatch('getData')
           // cookie.set('email', user.email)
           // cookie.set('authentication_token', user.authentication_token)
         }
       })
     },
+    register(context, credentials) {
+      console.log("Action: register")
+      axios({
+          method: 'post',
+          url: '/sign_up',
+          data: {
+            user: credentials
+          },
+      })
+      .then(res => {
+        console.log("Register success")
+        console.log(res.data)
+      })
+    },
     getTypes(context) {
       context.dispatch('dataLoader', ['types', 'setTypes'])
+    },
+    getType(context, typeId) {
+      context.dispatch('dataLoader', [`types/${typeId}`, 'setType'])
     },
     getTags(context) {
       context.dispatch('dataLoader', ['tags', 'setTags'])
     },
+    getTag(context, tagId) {
+      context.dispatch('dataLoader', [`tags/${tagId}`, 'setTag'])
+    },
     getArticles(context) {
       context.dispatch('dataLoader', ['articles', 'setArticles'])
     },
-    getData(context) {
-      context.dispatch('dataLoader', ['data', 'setData'])
+    getArticle(context, articleId) {
+      context.dispatch('dataLoader', [`articles/${articleId}`, 'setArticle'])
     },
     dataLoader(context, params) {
-      const [ type, mutation ] = params
-      console.log(`Get ${type}!"`)
+      // Получает URL для апи, по которому будет загружена дата
+      // Получает название мутации, которая будет выполнена после загрузки
+      const [ url, mutation ] = params
+      console.log(`Action: dataLoader: ${url}, ${mutation}`)
       axios({
           method: 'get',
-          url: `/${type}`,
+          url: `/${url}`,
           headers: {
             'X-User-Email': context.state.user.email,
             'X-User-Token': context.state.user.authentication_token,
@@ -131,6 +147,10 @@ export default createStore({
       .then(res => {
         console.log(res.data)
         context.commit(mutation, res.data)
+      })
+      .catch(() => {
+        console.error("Data not loaded")
+        // context.dispatch('logout')
       })
     }
   },

@@ -1,34 +1,35 @@
 <template>
   <div class="view">
-    <div v-if="getData.loaded && getTag">
 
+    <div v-if="getTag.id">
       <h1># {{ getTag.title }}</h1>
 
       <p>{{ getTag.body }}</p>
 
-      <p>
-        Notebook:
-        <router-link :to="{ name: 'Type', params: {id: getTag.type_id} }">
-          {{ getType.title }}
-        </router-link>
-      </p>
-
       <hr>
 
-      <p>Articles:</p>
+      <section v-if="getTag.articles.length">
+        <p>Articles:</p>
 
-      <div class="list-vertical">
-        <div v-for="article in getTagArticles" :key="article.id" class="list-vertical__item">
-          <router-link :to="{ name: 'Article', params: {id: article.id} }">
-            {{ article.title }}
-          </router-link>
+        <div class="list-vertical">
+          <div v-for="article in getTag.articles" :key="article.id" class="list-vertical__item">
+            <router-link :to="{ name: 'Article', params: {id: article.id} }" :class="{hidden: article.hidden}">
+              <span v-if="article.hidden">[secret]</span>
+              {{ article.title }}
+              <span class="right">{{ article.user.username }}</span>
+            </router-link>
+          </div>
         </div>
-      </div>
-
+      </section>
+      <section v-else>
+        <p>There are not articles yet</p>
+      </section>
     </div>
+
     <div v-else>
       Not found
     </div>
+
   </div>
 </template>
 
@@ -46,25 +47,16 @@ export default {
     currentId() {
       return this.$route.params.id
     },
-    getData() {
-      return this.$store.getters.getData
-    },
     getTag() {
-      return this.getData.tags.find(tag => tag.id == this.currentId)
-    },
-    getType() {
-      return this.getData.types.find(type => type.id == this.getTag.type_id)
-    },
-    getTagArticles() {
-      return this.$store.getters.getData.articles.filter(article => article.tag_id == this.getTag.id)
+      return this.$store.getters.getTag
     },
   },
   mounted() {
-    // this.$store.dispatch('getTypes')
+    console.log("Tag.vue mounted")
+    this.$store.dispatch('getTag', this.currentId)
   }
 }
 </script>
 
 <style lang="scss">
-
 </style>

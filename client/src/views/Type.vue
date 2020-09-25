@@ -1,6 +1,7 @@
 <template>
   <div class="view">
-    <div v-if="getData.loaded && getType">
+
+    <div v-if="getType.id">
 
       <h1>{{ getType.title }}</h1>
 
@@ -8,20 +9,30 @@
 
       <hr>
 
-      <p>Tags:</p>
+      <section v-if="getType.articles.length">
+        <p>Articles:</p>
 
-      <div class="list">
-        <div v-for="tag in getTypeTags" :key="tag.id" class="list__item">
-          <router-link :to="{ name: 'Tag', params: {id: tag.id} }" :class="{empty: tagArticlesCount(tag.id) == 0}">
-            # {{ tag.title }} ({{  tagArticlesCount(tag.id) }})
-          </router-link>
+        <div class="list-vertical">
+          <div v-for="article in getType.articles" :key="article.id" class="list-vertical__item">
+            <router-link :to="{ name: 'Article', params: {id: article.id} }" :class="{hidden: article.hidden}">
+              <span v-if="article.hidden">[secret]</span>
+              {{ article.title }}
+              <span class="right">{{ article.user.username }}</span>
+            </router-link>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section v-else>
+        <p>There are not articles yet</p>
+      </section>
 
     </div>
+
     <div v-else>
-      Not found
+      Type not found
     </div>
+
   </div>
 </template>
 
@@ -39,27 +50,15 @@ export default {
     currentId() {
       return this.$route.params.id
     },
-    getData() {
-      return this.$store.getters.getData
-    },
     getType() {
-      return this.getData.types.find(type => type.id == this.currentId)
+      return this.$store.getters.getType
     },
-    getTypeTags() {
-      return this.$store.getters.getData.tags.filter(tag => tag.type_id == this.getType.id)
-    },
-  },
-  methods: {
-    tagArticlesCount(tag_id) {
-      return this.$store.getters.getData.articles.filter(article => article.tag_id == tag_id).length
-    }
   },
   mounted() {
-    // this.$store.dispatch('getTypes')
+    this.$store.dispatch('getType', this.currentId)
   }
 }
 </script>
 
 <style lang="scss">
-
 </style>

@@ -11,6 +11,7 @@ const routes = [
   { path: '/tags/:id', name: 'Tag', component: () => import('../views/Tag.vue') },
   { path: '/articles', name: 'Articles', meta: { title: "Gekata: Articles" }, component: () => import('../views/Articles.vue') },
   { path: '/articles/:id', name: 'Article', component: () => import('../views/Article.vue') },
+  { path: '/articles/new', name: 'NewArticle', component: () => import('../views/NewArticle.vue') },
   // route level code-splitting
   // this generates a separate chunk (about.[hash].js) for this route
   // which is lazy-loaded when the route is visited.

@@ -1,40 +1,46 @@
 <template>
   <div class="view">
-    <div v-if="getData.loaded && getArticle">
+
+    <div v-if="getArticle.id">
 
       <p class="gold" v-if="getArticle.hidden">Your secret article</p>
       <h1 :class="{gold: getArticle.hidden}">{{ getArticle.title }}</h1>
 
-      <code>{{ getArticle.body }}</code>
+      <p class="body">{{ getArticle.body }}</p>
 
       <hr>
 
       <p>
         Author:
-        <router-link :to="{ name: 'Tag', params: {id: getTag.id} }">
+        <router-link :to="{ name: 'Tag', params: {id: getArticle.user.id} }">
           {{ getArticle.user.username }}
         </router-link>
       </p>
 
       <p>
-        Tag:
-        <router-link :to="{ name: 'Tag', params: {id: getTag.id} }">
-          {{ getTag.title }}
-        </router-link>
-      </p>
-
-      <p>
         Notebook:
-        <router-link :to="{ name: 'Type', params: {id: getType.id} }">
-          {{ getType.title }}
+        <router-link :to="{ name: 'Type', params: {id: getArticle.type.id} }">
+          {{ getArticle.type.title }}
         </router-link>
       </p>
 
+      <div>
+        Tags:
+        <div v-if="getArticle.tags.length" class="list">
+          <div v-for="tag in getArticle.tags" :key="tag.id" class="list__item">
+            <router-link :to="{ name: 'Tag', params: {id: tag.id} }">
+              # {{ tag.title }}
+            </router-link>
+          </div>
+        </div>
+      </div>
 
     </div>
+
     <div v-else>
-      Not found
+      Article not found
     </div>
+
   </div>
 </template>
 
@@ -52,28 +58,15 @@ export default {
     currentId() {
       return this.$route.params.id
     },
-    getData() {
-      return this.$store.getters.getData
-    },
     getArticle() {
-      return this.getData.articles.find(tag => tag.id == this.currentId)
-    },
-    getTag() {
-      return this.getData.tags.find(tag => tag.id == this.getArticle.tag_id)
-    },
-    getType() {
-      return this.getData.types.find(type => type.id == this.getTag.type_id)
-    },
-    getTagArticles() {
-      return this.$store.getters.getData.articles.filter(article => article.tag_id == this.getTag.id)
+      return this.$store.getters.getArticle
     },
   },
   mounted() {
-    // this.$store.dispatch('getTypes')
+    this.$store.dispatch('getArticle', this.currentId)
   }
 }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
 </style>
